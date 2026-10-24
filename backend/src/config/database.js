@@ -2,14 +2,16 @@
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 
+const useSSL = process.env.DB_SSL === 'true';
+
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
   port: parseInt(process.env.DB_PORT || '3306', 10),
   database: process.env.DB_NAME || 'resolveiq_db',
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
-  ssl: process.env.DB_HOST
-    ? { minVersion: 'TLSv1.2' }
+  ssl: useSSL
+    ? { ca: process.env.AIVEN_CA_CERT }
     : undefined,
   waitForConnections: true,
   connectionLimit: 20,
