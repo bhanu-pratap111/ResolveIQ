@@ -1,3 +1,4 @@
+
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 
@@ -7,6 +8,9 @@ const pool = mysql.createPool({
   database: process.env.DB_NAME || 'resolveiq_db',
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
+  ssl: process.env.DB_HOST
+    ? { minVersion: 'TLSv1.2' }
+    : undefined,
   waitForConnections: true,
   connectionLimit: 20,
   queueLimit: 0,
